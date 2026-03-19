@@ -1,15 +1,18 @@
 package substmodels.nucleotide;
 
+
 import beast.base.core.Description;
-import beast.base.core.Function;
 import beast.base.core.Input.Validate;
 import beast.base.core.Loggable;
 import beast.base.core.Param;
-import beast.base.inference.parameter.RealParameter;
 import beast.base.evolution.datatype.DataType;
 import beast.base.evolution.datatype.Nucleotide;
-import beast.base.evolution.substitutionmodel.Frequencies;
-import beast.base.evolution.substitutionmodel.GeneralSubstitutionModel;
+import beast.base.spec.domain.NonNegativeReal;
+import beast.base.spec.evolution.substitutionmodel.Frequencies;
+import beast.base.spec.evolution.substitutionmodel.GeneralSubstitutionModel;
+import beast.base.spec.inference.parameter.SimplexParam;
+import beast.base.spec.type.RealVector;
+import beast.base.spec.type.Simplex;
 
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
@@ -54,7 +57,7 @@ public class Base extends GeneralSubstitutionModel implements Loggable {
         	throw new IllegalArgumentException("Frequencies must be specified");
         }
         if (equalFreqs) {
-        	RealParameter f = new RealParameter("0.25 0.25 0.25 0.25");
+        	Simplex f = new SimplexParam(new double[] {0.25, 0.25, 0.25, 0.25});
         	frequencies = new Frequencies();
         	frequencies.initByName("frequencies", f);
         }
@@ -76,8 +79,8 @@ public class Base extends GeneralSubstitutionModel implements Loggable {
         }
         max++;
         
-        if (max > 1 && ratesInput.get().getDimension() != max) {
-            throw new IllegalArgumentException("Dimension of input 'rates' is " + ratesInput.get().getDimension() + " but a " +
+        if (max > 1 && ratesInput.get().size() != max) {
+            throw new IllegalArgumentException("Dimension of input 'rates' is " + ratesInput.get().size() + " but a " +
                     "rate matrix of dimension " + max + " was " +
                     "expected");
         }
@@ -97,19 +100,19 @@ public class Base extends GeneralSubstitutionModel implements Loggable {
 	
 	@Override
 	public void setupRelativeRates() {
-        Function rates = this.ratesInput.get();
-        relativeRates[0] = rates.getArrayValue(modelMap[0]);
-        relativeRates[1] = rates.getArrayValue(modelMap[1]);
-        relativeRates[2] = rates.getArrayValue(modelMap[2]);
-        relativeRates[3] = rates.getArrayValue(modelMap[0]);
-        relativeRates[4] = rates.getArrayValue(modelMap[3]);
-        relativeRates[5] = rates.getArrayValue(modelMap[4]);
-        relativeRates[6] = rates.getArrayValue(modelMap[1]);
-        relativeRates[7] = rates.getArrayValue(modelMap[3]);
-        relativeRates[8] = rates.getArrayValue(modelMap[5]);
-        relativeRates[9] = rates.getArrayValue(modelMap[2]);
-        relativeRates[10] = rates.getArrayValue(modelMap[4]);
-        relativeRates[11] = rates.getArrayValue(modelMap[5]);
+		RealVector<NonNegativeReal> rates = this.ratesInput.get();
+        relativeRates[0] = rates.get(modelMap[0]);
+        relativeRates[1] = rates.get(modelMap[1]);
+        relativeRates[2] = rates.get(modelMap[2]);
+        relativeRates[3] = rates.get(modelMap[0]);
+        relativeRates[4] = rates.get(modelMap[3]);
+        relativeRates[5] = rates.get(modelMap[4]);
+        relativeRates[6] = rates.get(modelMap[1]);
+        relativeRates[7] = rates.get(modelMap[3]);
+        relativeRates[8] = rates.get(modelMap[5]);
+        relativeRates[9] = rates.get(modelMap[2]);
+        relativeRates[10] = rates.get(modelMap[4]);
+        relativeRates[11] = rates.get(modelMap[5]);
     }
 
 	
@@ -134,13 +137,13 @@ public class Base extends GeneralSubstitutionModel implements Loggable {
 
 	@Override
 	public void log(long sample, PrintStream out) {
-        Function rates = this.ratesInput.get();
-		out.append(rates.getArrayValue(modelMap[0]) + "\t");
-		out.append(rates.getArrayValue(modelMap[1]) + "\t");
-		out.append(rates.getArrayValue(modelMap[2]) + "\t");
-		out.append(rates.getArrayValue(modelMap[3]) + "\t");
-		out.append(rates.getArrayValue(modelMap[4]) + "\t");
-		out.append(rates.getArrayValue(modelMap[5]) + "\t");
+		RealVector<NonNegativeReal> rates = this.ratesInput.get();
+		out.append(rates.get(modelMap[0]) + "\t");
+		out.append(rates.get(modelMap[1]) + "\t");
+		out.append(rates.get(modelMap[2]) + "\t");
+		out.append(rates.get(modelMap[3]) + "\t");
+		out.append(rates.get(modelMap[4]) + "\t");
+		out.append(rates.get(modelMap[5]) + "\t");
 	}
 
 	@Override
@@ -164,8 +167,8 @@ public class Base extends GeneralSubstitutionModel implements Loggable {
 	}
 
 	public double getRate(int i) {
-		Function rates = this.ratesInput.get();
-		return rates.getArrayValue(modelMap[i]);
+		RealVector<NonNegativeReal> rates = this.ratesInput.get();
+		return rates.get(modelMap[i]);
 	}
 
 	public double getRateAC() {
