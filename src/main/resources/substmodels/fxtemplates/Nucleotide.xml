@@ -20,7 +20,7 @@
     	    	 substmodels.nucleotide.JC.eigenSystem">
             <![CDATA[
         <plugin spec="substmodels.nucleotide.JC" id="Standard_JC.s:$(n)">
-            <parameter id="JCrates.s:$(n)" name="rates" value=" 1.0" lower="0.0" estimate="false"/>
+            <rates id="JCrates.s:$(n)" spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" value="1.0" estimate="false"/>
         </plugin>
 
 ]]>
@@ -34,18 +34,18 @@
     	    	 substmodels.nucleotide.F81.eigenSystem">
             <![CDATA[
         <plugin spec="substmodels.nucleotide.F81" id="Standard_F81.s:$(n)">
-            <parameter id="F81rates.s:$(n)" name="rates" value=" 1.0" lower="0.0" estimate="false"/>
-            <frequencies id="F81Freqs.s:$(n)" spec="Frequencies">
-                <frequencies id="F81freqParameter.s:$(n)" spec="parameter.RealParameter" dimension="4" value="0.25" lower="0" upper="1"/>
+            <rates id="F81rates.s:$(n)" spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" value="1.0" estimate="false"/>
+            <frequencies id="F81Freqs.s:$(n)" spec="beast.base.spec.evolution.substitutionmodel.Frequencies">
+                <frequencies id="F81freqParameter.s:$(n)" spec="beast.base.spec.inference.parameter.SimplexParam" dimension="4" value="0.25 0.25 0.25 0.25" />
             </frequencies>
         </plugin>
 
-        <distribution id="Standard_F81_frequencies_prior.s:$(n)" spec="beast.base.inference.distribution.Prior">
-            <x idref="F81freqParameter.s:$(n)"/>
-            <distr spec="distribution.Dirichlet" alpha="1.0 1.0 1.0 1.0"/>
-        </distribution>
+		<distribution id='Standard_F81_frequencies_prior.s:$(n)' param='@F81freqParameter.s:$(n)' spec="beast.base.spec.inference.distribution.Dirichlet">
+            <alpha spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" estimate="false">1.0 1.0 1.0 1.0</alpha>
+        </distribution> 
 
-        <plugin id="F81FrequenciesExchanger.s:$(n)" spec="kernel.BactrianDeltaExchangeOperator" delta="0.01" weight="0.1" parameter="@F81freqParameter.s:$(n)"/>
+
+        <plugin id="F81FrequenciesExchanger.s:$(n)" spec="beast.base.spec.inference.operator.DeltaExchangeOperator" delta="0.01" weight="0.1" parameter="@F81freqParameter.s:$(n)"/>
 
 ]]>
 
@@ -69,15 +69,15 @@
     	    	 substmodels.nucleotide.K80.eigenSystem">
             <![CDATA[
         <substModel spec="substmodels.nucleotide.K80" id="Standard_K80.s:$(n)">
-            <parameter id="K80rates.s:$(n)" name="rates" value=" 1.0 1.0" lower="0.0" estimate="true"/>
+            <rates id="K80rates.s:$(n)" spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" value=" 1.0 1.0" estimate="true"/>
         </substModel>
 
-        <distribution id="Standard_K80_rates_prior.s:$(n)" spec="beast.base.inference.distribution.Prior">
-            <x idref="K80rates.s:$(n)"/>
-            <distr spec="distribution.Dirichlet" alpha="1.0 1.0" sum="2"/>
-        </distribution>
+		<distribution id='Standard_K80_rates_prior.s:$(n)' param='@K80rates.s:$(n)' spec="beast.base.spec.inference.distribution.Dirichlet">
+            <alpha spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" estimate="false">1.0 1.0</alpha>
+        </distribution> 
 
-        <operator id="K80RateDeltaExchanger.s:$(n)" spec="kernel.BactrianDeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@K80rates.s:$(n)">
+
+        <operator id="K80RateDeltaExchanger.s:$(n)" spec="beast.base.spec.inference.operator.DeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@K80rates.s:$(n)">
         </operator>
 
 ]]>
@@ -101,24 +101,24 @@
     	    	 substmodels.nucleotide.HKY.eigenSystem">
             <![CDATA[
         <substModel spec="substmodels.nucleotide.HKY" id="Standard_HKY.s:$(n)">
-            <parameter id="HKYrates.s:$(n)" name="rates" value=" 1.0 1.0" lower="0.0" estimate="true"/>
-            <frequencies id="HKYFreqs.s:$(n)" spec="Frequencies">
-                <frequencies id="HKYfreqParameter.s:$(n)" spec="parameter.RealParameter" dimension="4" value="0.25" lower="0" upper="1"/>
+            <rates id="HKYrates.s:$(n)" spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" value=" 1.0 1.0" estimate="true"/>
+            <frequencies id="HKYFreqs.s:$(n)" spec="beast.base.spec.evolution.substitutionmodel.Frequencies">
+                <frequencies id="HKYfreqParameter.s:$(n)" spec="beast.base.spec.inference.parameter.SimplexParam" dimension="4" value="0.25 0.25 0.25 0.25" />
             </frequencies>
         </substModel>
 
-        <distribution id="Standard_HKY_rates_prior.s:$(n)" spec="beast.base.inference.distribution.Prior">
-            <x idref="HKYrates.s:$(n)"/>
-            <distr spec="distribution.Dirichlet" alpha="1.0 1.0" sum="2"/>
-        </distribution>
-        <distribution id="Standard_HKY_frequencies_prior.s:$(n)" spec="beast.base.inference.distribution.Prior">
-            <x idref="HKYfreqParameter.s:$(n)"/>
-            <distr spec="distribution.Dirichlet" alpha="1.0 1.0 1.0 1.0"/>
-        </distribution>
+		<distribution id='Standard_HKY_rates_prior.s:$(n)' param='@HKYrates.s:$(n)' spec="beast.base.spec.inference.distribution.Dirichlet">
+            <alpha spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" estimate="false">1.0 1.0</alpha>
+        </distribution> 
 
-        <operator id="HKYRateDeltaExchanger.s:$(n)" spec="kernel.BactrianDeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@HKYrates.s:$(n)">
+		<distribution id='Standard_HKY_frequencies_prior.s:$(n)' param='@HKYfreqParameter.s:$(n)' spec="beast.base.spec.inference.distribution.Dirichlet">
+            <alpha spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" estimate="false">1.0 1.0 1.0 1.0</alpha>
+        </distribution> 
+
+
+        <operator id="HKYRateDeltaExchanger.s:$(n)" spec="beast.base.spec.inference.operator.DeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@HKYrates.s:$(n)">
         </operator>
-        <operator id="HKYFrequenciesExchanger.s:$(n)" spec="kernel.BactrianDeltaExchangeOperator" delta="0.01" weight="0.1" parameter="@HKYfreqParameter.s:$(n)"/>
+        <operator id="HKYFrequenciesExchanger.s:$(n)" spec="beast.base.spec.inference.operator.DeltaExchangeOperator" delta="0.01" weight="0.1" parameter="@HKYfreqParameter.s:$(n)"/>
 
 ]]>
 
@@ -138,7 +138,7 @@
             <!--connect srcID="HKYrates.s:$(n)" targetID="tracelog" inputName="log" if="inlikelihood(Standard_HKY.s:$(n))"/-->
             <connect srcID="HKYfreqParameter.s:$(n)" targetID="tracelog" inputName="log" if="inlikelihood(Standard_HKY.s:$(n))"/>
                         <connect srcID="Standard_HKY.s:$(n)" targetID="tracelog" inputName="log" if="inlikelihood(Standard_HKY.s:$(n))"/>
-<connect srcID="Standard_HKY_rates_prior.s:$(n)" targetID="prior" inputName="distribution" if="inlikelihood(Standard_HKY.s:$(n))"/>
+			<connect srcID="Standard_HKY_rates_prior.s:$(n)" targetID="prior" inputName="distribution" if="inlikelihood(Standard_HKY.s:$(n))"/>
 
         </subtemplate>
 
@@ -150,15 +150,15 @@
     	    	 substmodels.nucleotide.TrNef.eigenSystem">
             <![CDATA[
         <substModel spec="substmodels.nucleotide.TrNef" id="Standard_TrNef.s:$(n)">
-            <parameter id="TrNefrates.s:$(n)" name="rates" value=" 1.0 1.0 1.0" lower="0.0" estimate="true"/>
+            <rates id="TrNefrates.s:$(n)" spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" value=" 1.0 1.0 1.0" estimate="true"/>
         </substModel>
 
-        <distribution id="Standard_TrNef_rates_prior.s:$(n)" spec="beast.base.inference.distribution.Prior">
-            <x idref="TrNefrates.s:$(n)"/>
-            <distr spec="distribution.Dirichlet" alpha="1.0 1.0 1.0" sum="3"/>
-        </distribution>
+		<distribution id='Standard_TrNef_rates_prior.s:$(n)' param='@TrNefrates.s:$(n)' spec="beast.base.spec.inference.distribution.Dirichlet">
+            <alpha spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" estimate="false">1.0 1.0 1.0</alpha>
+        </distribution> 
 
-        <operator id="TrNefRateDeltaExchanger.s:$(n)" spec="kernel.BactrianDeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@TrNefrates.s:$(n)">
+
+        <operator id="TrNefRateDeltaExchanger.s:$(n)" spec="beast.base.spec.inference.operator.DeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@TrNefrates.s:$(n)">
         </operator>
 
 ]]>
@@ -184,24 +184,24 @@
     	    	 substmodels.nucleotide.TrN.eigenSystem">
             <![CDATA[
         <substModel spec="substmodels.nucleotide.TrN" id="Standard_TrN.s:$(n)">
-            <parameter id="TrNrates.s:$(n)" name="rates" value=" 1.0 1.0 1.0" lower="0.0" estimate="true"/>
-            <frequencies id="TrNFreqs.s:$(n)" spec="Frequencies">
-                <frequencies id="TrNfreqParameter.s:$(n)" spec="parameter.RealParameter" dimension="4" value="0.25" lower="0" upper="1"/>
+            <rates id="TrNrates.s:$(n)" spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" value=" 1.0 1.0 1.0" estimate="true"/>
+            <frequencies id="TrNFreqs.s:$(n)" spec="beast.base.spec.evolution.substitutionmodel.Frequencies">
+                <frequencies id="TrNfreqParameter.s:$(n)" spec="beast.base.spec.inference.parameter.SimplexParam" dimension="4" value="0.25 0.25 0.25 0.25" />
             </frequencies>
         </substModel>
 
-        <distribution id="Standard_TrN_rates_prior.s:$(n)" spec="beast.base.inference.distribution.Prior">
-            <x idref="TrNrates.s:$(n)"/>
-            <distr spec="distribution.Dirichlet" alpha="1.0 1.0 1.0" sum="3"/>
-        </distribution>
-        <distribution id="Standard_TrN_frequencies_prior.s:$(n)" spec="beast.base.inference.distribution.Prior">
-            <x idref="TrNfreqParameter.s:$(n)"/>
-            <distr spec="distribution.Dirichlet" alpha="1.0 1.0 1.0 1.0"/>
-        </distribution>
+		<distribution id='Standard_TrN_rates_prior.s:$(n)' param='@TrNrates.s:$(n)' spec="beast.base.spec.inference.distribution.Dirichlet">
+            <alpha spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" estimate="false">1.0 1.0 1.0</alpha>
+        </distribution> 
 
-        <operator id="TrNRateDeltaExchanger.s:$(n)" spec="kernel.BactrianDeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@TrNrates.s:$(n)">
+		<distribution id='Standard_TrN_frequencies_prior.s:$(n)' param='@TrNfreqParameter.s:$(n)' spec="beast.base.spec.inference.distribution.Dirichlet">
+            <alpha spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" estimate="false">1.0 1.0 1.0 1.0</alpha>
+        </distribution> 
+
+
+        <operator id="TrNRateDeltaExchanger.s:$(n)" spec="beast.base.spec.inference.operator.DeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@TrNrates.s:$(n)">
         </operator>
-        <operator id="TrNFrequenciesExchanger.s:$(n)" spec="kernel.BactrianDeltaExchangeOperator" delta="0.01" weight="0.1" parameter="@TrNfreqParameter.s:$(n)"/>
+        <operator id="TrNFrequenciesExchanger.s:$(n)" spec="beast.base.spec.inference.operator.DeltaExchangeOperator" delta="0.01" weight="0.1" parameter="@TrNfreqParameter.s:$(n)"/>
 
 ]]>
 
@@ -233,15 +233,15 @@
     	    	 substmodels.nucleotide.TPM1.eigenSystem">
             <![CDATA[
         <substModel spec="substmodels.nucleotide.TPM1" id="Standard_TPM1.s:$(n)">
-            <parameter id="TPM1rates.s:$(n)" name="rates" value=" 1.0 1.0 1.0" lower="0.0" estimate="true"/>
+            <rates id="TPM1rates.s:$(n)" spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" value=" 1.0 1.0 1.0" estimate="true"/>
         </substModel>
 
-        <distribution id="Standard_TPM1_rates_prior.s:$(n)" spec="beast.base.inference.distribution.Prior">
-            <x idref="TPM1rates.s:$(n)"/>
-            <distr spec="distribution.Dirichlet" alpha="1.0 1.0 1.0" sum="3"/>
-        </distribution>
+		<distribution id='Standard_TPM1_rates_prior.s:$(n)' param='@TPM1rates.s:$(n)' spec="beast.base.spec.inference.distribution.Dirichlet">
+            <alpha spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" estimate="false">1.0 1.0 1.0</alpha>
+        </distribution> 
 
-        <operator id="TPM1RateDeltaExchanger.s:$(n)" spec="kernel.BactrianDeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@TPM1rates.s:$(n)">
+
+        <operator id="TPM1RateDeltaExchanger.s:$(n)" spec="beast.base.spec.inference.operator.DeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@TPM1rates.s:$(n)">
         </operator>
 
 ]]>
@@ -267,24 +267,24 @@
     	    	 substmodels.nucleotide.TPM1uf.eigenSystem">
             <![CDATA[
         <substModel spec="substmodels.nucleotide.TPM1uf" id="Standard_TPM1uf.s:$(n)">
-            <parameter id="TPM1ufrates.s:$(n)" name="rates" value=" 1.0 1.0 1.0" lower="0.0" estimate="true"/>
-            <frequencies id="TPM1ufFreqs.s:$(n)" spec="Frequencies">
-                <frequencies id="TPM1uffreqParameter.s:$(n)" spec="parameter.RealParameter" dimension="4" value="0.25" lower="0" upper="1"/>
+            <rates id="TPM1ufrates.s:$(n)" spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" value=" 1.0 1.0 1.0" estimate="true"/>
+            <frequencies id="TPM1ufFreqs.s:$(n)" spec="beast.base.spec.evolution.substitutionmodel.Frequencies">
+                <frequencies id="TPM1uffreqParameter.s:$(n)" spec="beast.base.spec.inference.parameter.SimplexParam" dimension="4" value="0.25 0.25 0.25 0.25" />
             </frequencies>
         </substModel>
 
-        <distribution id="Standard_TPM1uf_rates_prior.s:$(n)" spec="beast.base.inference.distribution.Prior">
-            <x idref="TPM1ufrates.s:$(n)"/>
-            <distr spec="distribution.Dirichlet" alpha="1.0 1.0 1.0" sum="3"/>
-        </distribution>
-        <distribution id="Standard_TPM1uf_frequencies_prior.s:$(n)" spec="beast.base.inference.distribution.Prior">
-            <x idref="TPM1uffreqParameter.s:$(n)"/>
-            <distr spec="distribution.Dirichlet" alpha="1.0 1.0 1.0 1.0"/>
-        </distribution>
+		<distribution id='Standard_TPM1uf_rates_prior.s:$(n)' param='@TPM1ufrates.s:$(n)' spec="beast.base.spec.inference.distribution.Dirichlet">
+            <alpha spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" estimate="false">1.0 1.0 1.0</alpha>
+        </distribution> 
 
-        <operator id="TPM1ufRateDeltaExchanger.s:$(n)" spec="kernel.BactrianDeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@TPM1ufrates.s:$(n)">
+		<distribution id='Standard_TPM1uf_frequencies_prior.s:$(n)' param='@TPM1uffreqParameter.s:$(n)' spec="beast.base.spec.inference.distribution.Dirichlet">
+            <alpha spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" estimate="false">1.0 1.0 1.0 1.0</alpha>
+        </distribution> 
+
+
+        <operator id="TPM1ufRateDeltaExchanger.s:$(n)" spec="beast.base.spec.inference.operator.DeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@TPM1ufrates.s:$(n)">
         </operator>
-        <operator id="TPM1ufFrequenciesExchanger.s:$(n)" spec="kernel.BactrianDeltaExchangeOperator" delta="0.01" weight="0.1" parameter="@TPM1uffreqParameter.s:$(n)"/>
+        <operator id="TPM1ufFrequenciesExchanger.s:$(n)" spec="beast.base.spec.inference.operator.DeltaExchangeOperator" delta="0.01" weight="0.1" parameter="@TPM1uffreqParameter.s:$(n)"/>
 
 ]]>
 
@@ -316,15 +316,15 @@
     	    	 substmodels.nucleotide.TPM2.eigenSystem">
             <![CDATA[
         <substModel spec="substmodels.nucleotide.TPM2" id="Standard_TPM2.s:$(n)">
-            <parameter id="TPM2rates.s:$(n)" name="rates" value=" 1.0 1.0 1.0" lower="0.0" estimate="true"/>
+            <rates id="TPM2rates.s:$(n)" spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" value=" 1.0 1.0 1.0" estimate="true"/>
         </substModel>
 
-        <distribution id="Standard_TPM2_rates_prior.s:$(n)" spec="beast.base.inference.distribution.Prior">
-            <x idref="TPM2rates.s:$(n)"/>
-            <distr spec="distribution.Dirichlet" alpha="1.0 1.0 1.0" sum="3"/>
-        </distribution>
+		<distribution id='Standard_TPM2_rates_prior.s:$(n)' param='@TPM2rates.s:$(n)' spec="beast.base.spec.inference.distribution.Dirichlet">
+            <alpha spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" estimate="false">1.0 1.0 1.0</alpha>
+        </distribution> 
 
-        <operator id="TPM2RateDeltaExchanger.s:$(n)" spec="kernel.BactrianDeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@TPM2rates.s:$(n)">
+
+        <operator id="TPM2RateDeltaExchanger.s:$(n)" spec="beast.base.spec.inference.operator.DeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@TPM2rates.s:$(n)">
         </operator>
 
 ]]>
@@ -350,24 +350,24 @@
     	    	 substmodels.nucleotide.TPM2uf.eigenSystem">
             <![CDATA[
         <substModel spec="substmodels.nucleotide.TPM2uf" id="Standard_TPM2uf.s:$(n)">
-            <parameter id="TPM2ufrates.s:$(n)" name="rates" value=" 1.0 1.0 1.0" lower="0.0" estimate="true"/>
-            <frequencies id="TPM2ufFreqs.s:$(n)" spec="Frequencies">
-                <frequencies id="TPM2uffreqParameter.s:$(n)" spec="parameter.RealParameter" dimension="4" value="0.25" lower="0" upper="1"/>
+            <rates id="TPM2ufrates.s:$(n)" spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" value=" 1.0 1.0 1.0" estimate="true"/>
+            <frequencies id="TPM2ufFreqs.s:$(n)" spec="beast.base.spec.evolution.substitutionmodel.Frequencies">
+                <frequencies id="TPM2uffreqParameter.s:$(n)" spec="beast.base.spec.inference.parameter.SimplexParam" dimension="4" value="0.25 0.25 0.25 0.25" />
             </frequencies>
         </substModel>
 
-        <distribution id="Standard_TPM2uf_rates_prior.s:$(n)" spec="beast.base.inference.distribution.Prior">
-            <x idref="TPM2ufrates.s:$(n)"/>
-            <distr spec="distribution.Dirichlet" alpha="1.0 1.0 1.0" sum="3"/>
-        </distribution>
-        <distribution id="Standard_TPM2uf_frequencies_prior.s:$(n)" spec="beast.base.inference.distribution.Prior">
-            <x idref="TPM2uffreqParameter.s:$(n)"/>
-            <distr spec="distribution.Dirichlet" alpha="1.0 1.0 1.0 1.0"/>
-        </distribution>
+		<distribution id='Standard_TPM2uf_rates_prior.s:$(n)' param='@TPM2ufrates.s:$(n)' spec="beast.base.spec.inference.distribution.Dirichlet">
+            <alpha spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" estimate="false">1.0 1.0 1.0</alpha>
+        </distribution> 
 
-        <operator id="TPM2ufRateDeltaExchanger.s:$(n)" spec="kernel.BactrianDeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@TPM2ufrates.s:$(n)">
+		<distribution id='Standard_TPM2uf_frequencies_prior.s:$(n)' param='@TPM2uffreqParameter.s:$(n)' spec="beast.base.spec.inference.distribution.Dirichlet">
+            <alpha spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" estimate="false">1.0 1.0 1.0 1.0</alpha>
+        </distribution> 
+
+
+        <operator id="TPM2ufRateDeltaExchanger.s:$(n)" spec="beast.base.spec.inference.operator.DeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@TPM2ufrates.s:$(n)">
         </operator>
-        <operator id="TPM2ufFrequenciesExchanger.s:$(n)" spec="kernel.BactrianDeltaExchangeOperator" delta="0.01" weight="0.1" parameter="@TPM2uffreqParameter.s:$(n)"/>
+        <operator id="TPM2ufFrequenciesExchanger.s:$(n)" spec="beast.base.spec.inference.operator.DeltaExchangeOperator" delta="0.01" weight="0.1" parameter="@TPM2uffreqParameter.s:$(n)"/>
 
 ]]>
 
@@ -399,15 +399,15 @@
     	    	 substmodels.nucleotide.TPM3.eigenSystem">
             <![CDATA[
         <substModel spec="substmodels.nucleotide.TPM3" id="Standard_TPM3.s:$(n)">
-            <parameter id="TPM3rates.s:$(n)" name="rates" value=" 1.0 1.0 1.0" lower="0.0" estimate="true"/>
+            <rates id="TPM3rates.s:$(n)" spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" value=" 1.0 1.0 1.0" estimate="true"/>
         </substModel>
 
-        <distribution id="Standard_TPM3_rates_prior.s:$(n)" spec="beast.base.inference.distribution.Prior">
-            <x idref="TPM3rates.s:$(n)"/>
-            <distr spec="distribution.Dirichlet" alpha="1.0 1.0 1.0" sum="3"/>
-        </distribution>
+		<distribution id='Standard_TPM3_rates_prior.s:$(n)' param='@TPM3rates.s:$(n)' spec="beast.base.spec.inference.distribution.Dirichlet">
+            <alpha spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" estimate="false">1.0 1.0 1.0</alpha>
+        </distribution> 
 
-        <operator id="TPM3RateDeltaExchanger.s:$(n)" spec="kernel.BactrianDeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@TPM3rates.s:$(n)">
+
+        <operator id="TPM3RateDeltaExchanger.s:$(n)" spec="beast.base.spec.inference.operator.DeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@TPM3rates.s:$(n)">
         </operator>
 
 ]]>
@@ -433,24 +433,24 @@
     	    	 substmodels.nucleotide.TPM3uf.eigenSystem">
             <![CDATA[
         <substModel spec="substmodels.nucleotide.TPM3uf" id="Standard_TPM3uf.s:$(n)">
-            <parameter id="TPM3ufrates.s:$(n)" name="rates" value=" 1.0 1.0 1.0" lower="0.0" estimate="true"/>
-            <frequencies id="TPM3ufFreqs.s:$(n)" spec="Frequencies">
-                <frequencies id="TPM3uffreqParameter.s:$(n)" spec="parameter.RealParameter" dimension="4" value="0.25" lower="0" upper="1"/>
+            <rates id="TPM3ufrates.s:$(n)" spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" value=" 1.0 1.0 1.0" estimate="true"/>
+            <frequencies id="TPM3ufFreqs.s:$(n)" spec="beast.base.spec.evolution.substitutionmodel.Frequencies">
+                <frequencies id="TPM3uffreqParameter.s:$(n)" spec="beast.base.spec.inference.parameter.SimplexParam" dimension="4" value="0.25 0.25 0.25 0.25" />
             </frequencies>
         </substModel>
 
-        <distribution id="Standard_TPM3uf_rates_prior.s:$(n)" spec="beast.base.inference.distribution.Prior">
-            <x idref="TPM3ufrates.s:$(n)"/>
-            <distr spec="distribution.Dirichlet" alpha="1.0 1.0 1.0" sum="3"/>
-        </distribution>
-        <distribution id="Standard_TPM3uf_frequencies_prior.s:$(n)" spec="beast.base.inference.distribution.Prior">
-            <x idref="TPM3uffreqParameter.s:$(n)"/>
-            <distr spec="distribution.Dirichlet" alpha="1.0 1.0 1.0 1.0"/>
-        </distribution>
+		<distribution id='Standard_TPM3uf_rates_prior.s:$(n)' param='@TPM3ufrates.s:$(n)' spec="beast.base.spec.inference.distribution.Dirichlet">
+            <alpha spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" estimate="false">1.0 1.0 1.0</alpha>
+        </distribution> 
 
-        <operator id="TPM3ufRateDeltaExchanger.s:$(n)" spec="kernel.BactrianDeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@TPM3ufrates.s:$(n)">
+		<distribution id='Standard_TPM3uf_frequencies_prior.s:$(n)' param='@TPM3uffreqParameter.s:$(n)' spec="beast.base.spec.inference.distribution.Dirichlet">
+            <alpha spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" estimate="false">1.0 1.0 1.0 1.0</alpha>
+        </distribution> 
+
+
+        <operator id="TPM3ufRateDeltaExchanger.s:$(n)" spec="beast.base.spec.inference.operator.DeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@TPM3ufrates.s:$(n)">
         </operator>
-        <operator id="TPM3ufFrequenciesExchanger.s:$(n)" spec="kernel.BactrianDeltaExchangeOperator" delta="0.01" weight="0.1" parameter="@TPM3uffreqParameter.s:$(n)"/>
+        <operator id="TPM3ufFrequenciesExchanger.s:$(n)" spec="beast.base.spec.inference.operator.DeltaExchangeOperator" delta="0.01" weight="0.1" parameter="@TPM3uffreqParameter.s:$(n)"/>
 
 ]]>
 
@@ -482,15 +482,15 @@
     	    	 substmodels.nucleotide.TIM1.eigenSystem">
             <![CDATA[
         <substModel spec="substmodels.nucleotide.TIM1" id="Standard_TIM1.s:$(n)">
-            <parameter id="TIM1rates.s:$(n)" name="rates" value=" 1.0 1.0 1.0 1.0" lower="0.0" estimate="true"/>
+            <rates id="TIM1rates.s:$(n)" spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" value=" 1.0 1.0 1.0 1.0" estimate="true"/>
         </substModel>
 
-        <distribution id="Standard_TIM1_rates_prior.s:$(n)" spec="beast.base.inference.distribution.Prior">
-            <x idref="TIM1rates.s:$(n)"/>
-            <distr spec="distribution.Dirichlet" alpha="1.0 1.0 1.0 1.0" sum="4"/>
-        </distribution>
+		<distribution id='Standard_TIM1_rates_prior.s:$(n)' param='@TIM1rates.s:$(n)' spec="beast.base.spec.inference.distribution.Dirichlet">
+            <alpha spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" estimate="false">1.0 1.0 1.0 1.0</alpha>
+        </distribution> 
 
-        <operator id="TIM1RateDeltaExchanger.s:$(n)" spec="kernel.BactrianDeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@TIM1rates.s:$(n)">
+
+        <operator id="TIM1RateDeltaExchanger.s:$(n)" spec="beast.base.spec.inference.operator.DeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@TIM1rates.s:$(n)">
         </operator>
 
 ]]>
@@ -516,24 +516,24 @@
     	    	 substmodels.nucleotide.TIM1uf.eigenSystem">
             <![CDATA[
         <substModel spec="substmodels.nucleotide.TIM1uf" id="Standard_TIM1uf.s:$(n)">
-            <parameter id="TIM1ufrates.s:$(n)" name="rates" value=" 1.0 1.0 1.0 1.0" lower="0.0" estimate="true"/>
-            <frequencies id="TIM1ufFreqs.s:$(n)" spec="Frequencies">
-                <frequencies id="TIM1uffreqParameter.s:$(n)" spec="parameter.RealParameter" dimension="4" value="0.25" lower="0" upper="1"/>
+            <rates id="TIM1ufrates.s:$(n)" spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" value=" 1.0 1.0 1.0 1.0" estimate="true"/>
+            <frequencies id="TIM1ufFreqs.s:$(n)" spec="beast.base.spec.evolution.substitutionmodel.Frequencies">
+                <frequencies id="TIM1uffreqParameter.s:$(n)" spec="beast.base.spec.inference.parameter.SimplexParam" dimension="4" value="0.25 0.25 0.25 0.25" />
             </frequencies>
         </substModel>
 
-        <distribution id="Standard_TIM1uf_rates_prior.s:$(n)" spec="beast.base.inference.distribution.Prior">
-            <x idref="TIM1ufrates.s:$(n)"/>
-            <distr spec="distribution.Dirichlet" alpha="1.0 1.0 1.0 1.0" sum="4"/>
-        </distribution>
-        <distribution id="Standard_TIM1uf_frequencies_prior.s:$(n)" spec="beast.base.inference.distribution.Prior">
-            <x idref="TIM1uffreqParameter.s:$(n)"/>
-            <distr spec="distribution.Dirichlet" alpha="1.0 1.0 1.0 1.0"/>
-        </distribution>
+		<distribution id='Standard_TIM1uf_rates_prior.s:$(n)' param='@TIM1ufrates.s:$(n)' spec="beast.base.spec.inference.distribution.Dirichlet">
+            <alpha spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" estimate="false">1.0 1.0 1.0 1.0</alpha>
+        </distribution> 
 
-        <operator id="TIM1ufRateDeltaExchanger.s:$(n)" spec="kernel.BactrianDeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@TIM1ufrates.s:$(n)">
+		<distribution id='Standard_TIM1uf_frequencies_prior.s:$(n)' param='@TIM1uffreqParameter.s:$(n)' spec="beast.base.spec.inference.distribution.Dirichlet">
+            <alpha spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" estimate="false">1.0 1.0 1.0 1.0</alpha>
+        </distribution> 
+
+
+        <operator id="TIM1ufRateDeltaExchanger.s:$(n)" spec="beast.base.spec.inference.operator.DeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@TIM1ufrates.s:$(n)">
         </operator>
-        <operator id="TIM1ufFrequenciesExchanger.s:$(n)" spec="kernel.BactrianDeltaExchangeOperator" delta="0.01" weight="0.1" parameter="@TIM1uffreqParameter.s:$(n)"/>
+        <operator id="TIM1ufFrequenciesExchanger.s:$(n)" spec="beast.base.spec.inference.operator.DeltaExchangeOperator" delta="0.01" weight="0.1" parameter="@TIM1uffreqParameter.s:$(n)"/>
 
 ]]>
 
@@ -565,15 +565,15 @@
     	    	 substmodels.nucleotide.TIM2.eigenSystem">
             <![CDATA[
         <substModel spec="substmodels.nucleotide.TIM2" id="Standard_TIM2.s:$(n)">
-            <parameter id="TIM2rates.s:$(n)" name="rates" value=" 1.0 1.0 1.0 1.0" lower="0.0" estimate="true"/>
+            <rates id="TIM2rates.s:$(n)" spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" value=" 1.0 1.0 1.0 1.0" estimate="true"/>
         </substModel>
 
-        <distribution id="Standard_TIM2_rates_prior.s:$(n)" spec="beast.base.inference.distribution.Prior">
-            <x idref="TIM2rates.s:$(n)"/>
-            <distr spec="distribution.Dirichlet" alpha="1.0 1.0 1.0 1.0" sum="4"/>
-        </distribution>
+		<distribution id='Standard_TIM2_rates_prior.s:$(n)' param='@TIM2rates.s:$(n)' spec="beast.base.spec.inference.distribution.Dirichlet">
+            <alpha spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" estimate="false">1.0 1.0 1.0 1.0</alpha>
+        </distribution> 
 
-        <operator id="TIM2RateDeltaExchanger.s:$(n)" spec="kernel.BactrianDeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@TIM2rates.s:$(n)">
+
+        <operator id="TIM2RateDeltaExchanger.s:$(n)" spec="beast.base.spec.inference.operator.DeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@TIM2rates.s:$(n)">
         </operator>
 
 ]]>
@@ -599,24 +599,24 @@
     	    	 substmodels.nucleotide.TIM2uf.eigenSystem">
             <![CDATA[
         <substModel spec="substmodels.nucleotide.TIM2uf" id="Standard_TIM2uf.s:$(n)">
-            <parameter id="TIM2ufrates.s:$(n)" name="rates" value=" 1.0 1.0 1.0 1.0" lower="0.0" estimate="true"/>
-            <frequencies id="TIM2ufFreqs.s:$(n)" spec="Frequencies">
-                <frequencies id="TIM2uffreqParameter.s:$(n)" spec="parameter.RealParameter" dimension="4" value="0.25" lower="0" upper="1"/>
+            <rates id="TIM2ufrates.s:$(n)" spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" value=" 1.0 1.0 1.0 1.0" estimate="true"/>
+            <frequencies id="TIM2ufFreqs.s:$(n)" spec="beast.base.spec.evolution.substitutionmodel.Frequencies">
+                <frequencies id="TIM2uffreqParameter.s:$(n)" spec="beast.base.spec.inference.parameter.SimplexParam" dimension="4" value="0.25 0.25 0.25 0.25" />
             </frequencies>
         </substModel>
 
-        <distribution id="Standard_TIM2uf_rates_prior.s:$(n)" spec="beast.base.inference.distribution.Prior">
-            <x idref="TIM2ufrates.s:$(n)"/>
-            <distr spec="distribution.Dirichlet" alpha="1.0 1.0 1.0 1.0" sum="4"/>
-        </distribution>
-        <distribution id="Standard_TIM2uf_frequencies_prior.s:$(n)" spec="beast.base.inference.distribution.Prior">
-            <x idref="TIM2uffreqParameter.s:$(n)"/>
-            <distr spec="distribution.Dirichlet" alpha="1.0 1.0 1.0 1.0"/>
-        </distribution>
+		<distribution id='Standard_TIM2uf_rates_prior.s:$(n)' param='@TIM2ufrates.s:$(n)' spec="beast.base.spec.inference.distribution.Dirichlet">
+            <alpha spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" estimate="false">1.0 1.0 1.0 1.0</alpha>
+        </distribution> 
 
-        <operator id="TIM2ufRateDeltaExchanger.s:$(n)" spec="kernel.BactrianDeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@TIM2ufrates.s:$(n)">
+		<distribution id='Standard_TIM2uf_frequencies_prior.s:$(n)' param='@TIM2uffreqParameter.s:$(n)' spec="beast.base.spec.inference.distribution.Dirichlet">
+            <alpha spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" estimate="false">1.0 1.0 1.0 1.0</alpha>
+        </distribution> 
+
+
+        <operator id="TIM2ufRateDeltaExchanger.s:$(n)" spec="beast.base.spec.inference.operator.DeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@TIM2ufrates.s:$(n)">
         </operator>
-        <operator id="TIM2ufFrequenciesExchanger.s:$(n)" spec="kernel.BactrianDeltaExchangeOperator" delta="0.01" weight="0.1" parameter="@TIM2uffreqParameter.s:$(n)"/>
+        <operator id="TIM2ufFrequenciesExchanger.s:$(n)" spec="beast.base.spec.inference.operator.DeltaExchangeOperator" delta="0.01" weight="0.1" parameter="@TIM2uffreqParameter.s:$(n)"/>
 
 ]]>
 
@@ -648,15 +648,15 @@
     	    	 substmodels.nucleotide.TIM3.eigenSystem">
             <![CDATA[
         <substModel spec="substmodels.nucleotide.TIM3" id="Standard_TIM3.s:$(n)">
-            <parameter id="TIM3rates.s:$(n)" name="rates" value=" 1.0 1.0 1.0 1.0" lower="0.0" estimate="true"/>
+            <rates id="TIM3rates.s:$(n)" spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" value=" 1.0 1.0 1.0 1.0" estimate="true"/>
         </substModel>
 
-        <distribution id="Standard_TIM3_rates_prior.s:$(n)" spec="beast.base.inference.distribution.Prior">
-            <x idref="TIM3rates.s:$(n)"/>
-            <distr spec="distribution.Dirichlet" alpha="1.0 1.0 1.0 1.0" sum="4"/>
-        </distribution>
+		<distribution id='Standard_TIM3_rates_prior.s:$(n)' param='@TIM3rates.s:$(n)' spec="beast.base.spec.inference.distribution.Dirichlet">
+            <alpha spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" estimate="false">1.0 1.0 1.0 1.0</alpha>
+        </distribution> 
 
-        <operator id="TIM3RateDeltaExchanger.s:$(n)" spec="kernel.BactrianDeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@TIM3rates.s:$(n)">
+
+        <operator id="TIM3RateDeltaExchanger.s:$(n)" spec="beast.base.spec.inference.operator.DeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@TIM3rates.s:$(n)">
         </operator>
 
 ]]>
@@ -682,24 +682,24 @@
     	    	 substmodels.nucleotide.TIM3uf.eigenSystem">
             <![CDATA[
         <substModel spec="substmodels.nucleotide.TIM3uf" id="Standard_TIM3uf.s:$(n)">
-            <parameter id="TIM3ufrates.s:$(n)" name="rates" value=" 1.0 1.0 1.0 1.0" lower="0.0" estimate="true"/>
-            <frequencies id="TIM3ufFreqs.s:$(n)" spec="Frequencies">
-                <frequencies id="TIM3uffreqParameter.s:$(n)" spec="parameter.RealParameter" dimension="4" value="0.25" lower="0" upper="1"/>
+            <rates id="TIM3ufrates.s:$(n)" spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" value=" 1.0 1.0 1.0 1.0" estimate="true"/>
+            <frequencies id="TIM3ufFreqs.s:$(n)" spec="beast.base.spec.evolution.substitutionmodel.Frequencies">
+                <frequencies id="TIM3uffreqParameter.s:$(n)" spec="beast.base.spec.inference.parameter.SimplexParam" dimension="4" value="0.25 0.25 0.25 0.25" />
             </frequencies>
         </substModel>
 
-        <distribution id="Standard_TIM3uf_rates_prior.s:$(n)" spec="beast.base.inference.distribution.Prior">
-            <x idref="TIM3ufrates.s:$(n)"/>
-            <distr spec="distribution.Dirichlet" alpha="1.0 1.0 1.0 1.0" sum="4"/>
-        </distribution>
-        <distribution id="Standard_TIM3uf_frequencies_prior.s:$(n)" spec="beast.base.inference.distribution.Prior">
-            <x idref="TIM3uffreqParameter.s:$(n)"/>
-            <distr spec="distribution.Dirichlet" alpha="1.0 1.0 1.0 1.0"/>
-        </distribution>
+		<distribution id='Standard_TIM3uf_rates_prior.s:$(n)' param='@TIM3ufrates.s:$(n)' spec="beast.base.spec.inference.distribution.Dirichlet">
+            <alpha spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" estimate="false">1.0 1.0 1.0 1.0</alpha>
+        </distribution> 
 
-        <operator id="TIM3ufRateDeltaExchanger.s:$(n)" spec="kernel.BactrianDeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@TIM3ufrates.s:$(n)">
+		<distribution id='Standard_TIM3uf_frequencies_prior.s:$(n)' param='@TIM3uffreqParameter.s:$(n)' spec="beast.base.spec.inference.distribution.Dirichlet">
+            <alpha spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" estimate="false">1.0 1.0 1.0 1.0</alpha>
+        </distribution> 
+
+
+        <operator id="TIM3ufRateDeltaExchanger.s:$(n)" spec="beast.base.spec.inference.operator.DeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@TIM3ufrates.s:$(n)">
         </operator>
-        <operator id="TIM3ufFrequenciesExchanger.s:$(n)" spec="kernel.BactrianDeltaExchangeOperator" delta="0.01" weight="0.1" parameter="@TIM3uffreqParameter.s:$(n)"/>
+        <operator id="TIM3ufFrequenciesExchanger.s:$(n)" spec="beast.base.spec.inference.operator.DeltaExchangeOperator" delta="0.01" weight="0.1" parameter="@TIM3uffreqParameter.s:$(n)"/>
 
 ]]>
 
@@ -731,15 +731,15 @@
     	    	 substmodels.nucleotide.TVMef.eigenSystem">
             <![CDATA[
         <substModel spec="substmodels.nucleotide.TVMef" id="Standard_TVMef.s:$(n)">
-            <parameter id="TVMefrates.s:$(n)" name="rates" value=" 1.0 1.0 1.0 1.0 1.0" lower="0.0" estimate="true"/>
+            <rates id="TVMefrates.s:$(n)" spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" value=" 1.0 1.0 1.0 1.0 1.0" estimate="true"/>
         </substModel>
 
-        <distribution id="Standard_TVMef_rates_prior.s:$(n)" spec="beast.base.inference.distribution.Prior">
-            <x idref="TVMefrates.s:$(n)"/>
-            <distr spec="distribution.Dirichlet" alpha="1.0 1.0 1.0 1.0 1.0" sum="5"/>
-        </distribution>
+		<distribution id='Standard_TVMef_rates_prior.s:$(n)' param='@TVMefrates.s:$(n)' spec="beast.base.spec.inference.distribution.Dirichlet">
+            <alpha spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" estimate="false">1.0 1.0 1.0 1.0 1.0</alpha>
+        </distribution> 
 
-        <operator id="TVMefRateDeltaExchanger.s:$(n)" spec="kernel.BactrianDeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@TVMefrates.s:$(n)">
+
+        <operator id="TVMefRateDeltaExchanger.s:$(n)" spec="beast.base.spec.inference.operator.DeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@TVMefrates.s:$(n)">
         </operator>
 
 ]]>
@@ -765,24 +765,24 @@
     	    	 substmodels.nucleotide.TVM.eigenSystem">
             <![CDATA[
         <substModel spec="substmodels.nucleotide.TVM" id="Standard_TVM.s:$(n)">
-            <parameter id="TVMrates.s:$(n)" name="rates" value=" 1.0 1.0 1.0 1.0 1.0" lower="0.0" estimate="true"/>
-            <frequencies id="TVMFreqs.s:$(n)" spec="Frequencies">
-                <frequencies id="TVMfreqParameter.s:$(n)" spec="parameter.RealParameter" dimension="4" value="0.25" lower="0" upper="1"/>
+            <rates id="TVMrates.s:$(n)" spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" value=" 1.0 1.0 1.0 1.0 1.0" estimate="true"/>
+            <frequencies id="TVMFreqs.s:$(n)" spec="beast.base.spec.evolution.substitutionmodel.Frequencies">
+                <frequencies id="TVMfreqParameter.s:$(n)" spec="beast.base.spec.inference.parameter.SimplexParam" dimension="4" value="0.25 0.25 0.25 0.25" />
             </frequencies>
         </substModel>
 
-        <distribution id="Standard_TVM_rates_prior.s:$(n)" spec="beast.base.inference.distribution.Prior">
-            <x idref="TVMrates.s:$(n)"/>
-            <distr spec="distribution.Dirichlet" alpha="1.0 1.0 1.0 1.0 1.0" sum="5"/>
-        </distribution>
-        <distribution id="Standard_TVM_frequencies_prior.s:$(n)" spec="beast.base.inference.distribution.Prior">
-            <x idref="TVMfreqParameter.s:$(n)"/>
-            <distr spec="distribution.Dirichlet" alpha="1.0 1.0 1.0 1.0"/>
-        </distribution>
+		<distribution id='Standard_TVM_rates_prior.s:$(n)' param='@TVMrates.s:$(n)' spec="beast.base.spec.inference.distribution.Dirichlet">
+            <alpha spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" estimate="false">1.0 1.0 1.0 1.0 1.0</alpha>
+        </distribution> 
 
-        <operator id="TVMRateDeltaExchanger.s:$(n)" spec="kernel.BactrianDeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@TVMrates.s:$(n)">
+		<distribution id='Standard_TVM_frequencies_prior.s:$(n)' param='@TVMfreqParameter.s:$(n)' spec="beast.base.spec.inference.distribution.Dirichlet">
+            <alpha spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" estimate="false">1.0 1.0 1.0 1.0</alpha>
+        </distribution> 
+
+
+        <operator id="TVMRateDeltaExchanger.s:$(n)" spec="beast.base.spec.inference.operator.DeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@TVMrates.s:$(n)">
         </operator>
-        <operator id="TVMFrequenciesExchanger.s:$(n)" spec="kernel.BactrianDeltaExchangeOperator" delta="0.01" weight="0.1" parameter="@TVMfreqParameter.s:$(n)"/>
+        <operator id="TVMFrequenciesExchanger.s:$(n)" spec="beast.base.spec.inference.operator.DeltaExchangeOperator" delta="0.01" weight="0.1" parameter="@TVMfreqParameter.s:$(n)"/>
 
 ]]>
 
@@ -813,15 +813,15 @@
     	    	 substmodels.nucleotide.SYM.eigenSystem">
             <![CDATA[
         <substModel spec="substmodels.nucleotide.SYM" id="Standard_SYM.s:$(n)">
-            <parameter id="SYMrates.s:$(n)" name="rates" value=" 1.0 1.0 1.0 1.0 1.0 1.0" lower="0.0" estimate="true"/>
+            <rates id="SYMrates.s:$(n)" spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" value=" 1.0 1.0 1.0 1.0 1.0 1.0" estimate="true"/>
         </substModel>
 
-        <distribution id="Standard_SYM_rates_prior.s:$(n)" spec="beast.base.inference.distribution.Prior">
-            <x idref="SYMrates.s:$(n)"/>
-            <distr spec="distribution.Dirichlet" alpha="1.0 1.0 1.0 1.0 1.0 1.0" sum="6"/>
-        </distribution>
+		<distribution id='Standard_SYM_rates_prior.s:$(n)' param='@SYMrates.s:$(n)' spec="beast.base.spec.inference.distribution.Dirichlet">
+            <alpha spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" estimate="false">1.0 1.0 1.0 1.0 1.0 1.0</alpha>
+        </distribution> 
 
-        <operator id="SYMRateDeltaExchanger.s:$(n)" spec="kernel.BactrianDeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@SYMrates.s:$(n)">
+
+        <operator id="SYMRateDeltaExchanger.s:$(n)" spec="beast.base.spec.inference.operator.DeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@SYMrates.s:$(n)">
         </operator>
 
 ]]>
@@ -848,25 +848,25 @@
     	    	 substmodels.nucleotide.GTR.eigenSystem">
             <![CDATA[
         <substModel spec="substmodels.nucleotide.GTR" id="Standard_GTR.s:$(n)">
-            <parameter id="GTRrates.s:$(n)" name="rates" value=" 1.0 1.0 1.0 1.0 1.0 1.0" lower="0.0" estimate="true"/>
-            <frequencies id="GTRFreqs.s:$(n)" spec="Frequencies">
-                <frequencies id="GTRfreqParameter.s:$(n)" spec="parameter.RealParameter" dimension="4" value="0.25" lower="0" upper="1"/>
+            <rates id="GTRrates.s:$(n)" spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" value=" 1.0 1.0 1.0 1.0 1.0 1.0" estimate="true"/>
+            <frequencies id="GTRFreqs.s:$(n)" spec="beast.base.spec.evolution.substitutionmodel.Frequencies">
+                <frequencies id="GTRfreqParameter.s:$(n)" spec="beast.base.spec.inference.parameter.SimplexParam" dimension="4" value="0.25 0.25 0.25 0.25" />
             </frequencies>
         </substModel>
 
-        <distribution id="Standard_GTR_rates_prior.s:$(n)" spec="beast.base.inference.distribution.Prior">
-            <x idref="GTRrates.s:$(n)"/>
-            <distr spec="distribution.Dirichlet" alpha="1.0 1.0 1.0 1.0 1.0 1.0" sum="6"/>
-        </distribution>
+		<distribution id='Standard_GTR_rates_prior.s:$(n)' param='@GTRrates.s:$(n)' spec="beast.base.spec.inference.distribution.Dirichlet">
+            <alpha spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" estimate="false">1.0 1.0 1.0 1.0 1.0 1.0</alpha>
+        </distribution> 
 
-        <distribution id="Standard_GTR_frequencies_prior.s:$(n)" spec="beast.base.inference.distribution.Prior">
-            <x idref="GTRfreqParameter.s:$(n)"/>
-            <distr spec="distribution.Dirichlet" alpha="1.0 1.0 1.0 1.0"/>
-        </distribution>
 
-        <operator id="GTRRateDeltaExchanger.s:$(n)" spec="kernel.BactrianDeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@GTRrates.s:$(n)">
+		<distribution id='Standard_GTR_frequencies_prior.s:$(n)' param='@GTRfreqParameter.s:$(n)' spec="beast.base.spec.inference.distribution.Dirichlet">
+            <alpha spec="beast.base.spec.inference.parameter.RealVectorParam" domain="PositiveReal" estimate="false">1.0 1.0 1.0 1.0</alpha>
+        </distribution> 
+
+
+        <operator id="GTRRateDeltaExchanger.s:$(n)" spec="beast.base.spec.inference.operator.DeltaExchangeOperator" delta="0.1" weight="0.1" parameter="@GTRrates.s:$(n)">
         </operator>
-        <operator id="GTRFrequenciesExchanger.s:$(n)" spec="kernel.BactrianDeltaExchangeOperator" delta="0.01" weight="0.1" parameter="@GTRfreqParameter.s:$(n)"/>
+        <operator id="GTRFrequenciesExchanger.s:$(n)" spec="beast.base.spec.inference.operator.DeltaExchangeOperator" delta="0.01" weight="0.1" parameter="@GTRfreqParameter.s:$(n)"/>
 
 ]]>
 

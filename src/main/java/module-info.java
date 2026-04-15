@@ -1,7 +1,7 @@
 open module substmodel {
-    requires beast.base;
     requires beast.pkgmgmt;
-    requires beast.fx;
+    requires transitive beast.base;
+    requires transitive beast.fx;
     requires javafx.controls;
 
 
