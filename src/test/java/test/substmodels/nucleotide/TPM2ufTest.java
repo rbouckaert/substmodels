@@ -1,8 +1,12 @@
 package test.substmodels.nucleotide;
 
 import beast.base.core.Description;
-import beast.base.inference.parameter.RealParameter;
-import beast.base.evolution.substitutionmodel.Frequencies;
+import beast.base.spec.domain.NonNegativeReal;
+import beast.base.spec.evolution.substitutionmodel.Frequencies;
+import beast.base.spec.inference.parameter.RealVectorParam;
+import beast.base.spec.inference.parameter.SimplexParam;
+import beast.base.spec.type.RealVector;
+import beast.base.spec.type.Simplex;
 import junit.framework.TestCase;
 import substmodels.nucleotide.TPM2uf;
 
@@ -26,13 +30,13 @@ public class TPM2ufTest extends TestCase {
      */
     protected UnequalBaseFrequencies test0 = new UnequalBaseFrequencies() {
         @Override
-        public Double[] getPi() {
-            return new Double[]{0.4, 0.3, 0.2, 0.1};
+        public double[] getPi() {
+            return new double[]{0.4, 0.3, 0.2, 0.1};
         }
-        
+
         @Override
-        public Double [] getRates() {
-            return new Double[] {1.0, 2.0, 3.0};
+        public double [] getRates() {
+            return new double[] {1.0, 2.0, 3.0};
         }
 
         @Override
@@ -57,12 +61,12 @@ public class TPM2ufTest extends TestCase {
     public void testTPM2uf() throws Exception {
         for (UnequalBaseFrequencies test : all) {
 
-            RealParameter f = new RealParameter(test.getPi());
+            Simplex f = new SimplexParam(test.getPi());
             Frequencies freqs = new Frequencies();
             freqs.initByName("frequencies", f); // "estimate", true
 
             TPM2uf tpm2uf = new TPM2uf();
-            RealParameter rates = new RealParameter(test.getRates());
+            RealVector<NonNegativeReal> rates = new RealVectorParam<>(test.getRates(), NonNegativeReal.INSTANCE);
             tpm2uf.initByName("rates", rates, "frequencies", freqs);
             tpm2uf.printQ(System.out); // to obtain XQ for python script
 //            for (int i = 0; i < 6; ++i)

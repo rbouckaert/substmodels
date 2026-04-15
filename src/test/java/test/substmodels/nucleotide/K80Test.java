@@ -1,7 +1,9 @@
 package test.substmodels.nucleotide;
 
 import beast.base.core.Description;
-import beast.base.inference.parameter.RealParameter;
+import beast.base.spec.domain.NonNegativeReal;
+import beast.base.spec.inference.parameter.RealVectorParam;
+import beast.base.spec.type.RealVector;
 import junit.framework.TestCase;
 import substmodels.nucleotide.K80;
 
@@ -13,8 +15,8 @@ public class K80Test extends TestCase {
 
     protected EqualBaseFrequencies test0 = new EqualBaseFrequencies() {
         @Override
-        public Double [] getRates() {
-            return new Double[] {1.0, 2.0};
+        public double [] getRates() {
+            return new double[] {1.0, 2.0};
         }
 
         @Override
@@ -40,7 +42,7 @@ public class K80Test extends TestCase {
         for (EqualBaseFrequencies test : all) {
 
             K80 k80 = new K80();
-            RealParameter rates = new RealParameter(test.getRates());
+            RealVector<NonNegativeReal> rates = new RealVectorParam<>(test.getRates(), NonNegativeReal.INSTANCE);
             k80.initByName("rates", rates);
             k80.printQ(System.out); // to obtain XQ for python script
 //            for (int i = 0; i < 6; ++i)
@@ -52,7 +54,7 @@ public class K80Test extends TestCase {
             // AG=CT
             assertEquals(true, k80.getRateAG()==k80.getRateCT() &&
                     k80.getRateAC()!=k80.getRateCT() );
-            
+
             double distance = test.getDistance();
             double[] mat = new double[4 * 4];
             k80.getTransitionProbabilities(null, distance, 0, 1, mat);

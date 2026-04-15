@@ -2,8 +2,12 @@ package test.substmodels.nucleotide;
 
 
 import beast.base.core.Description;
-import beast.base.inference.parameter.RealParameter;
-import beast.base.evolution.substitutionmodel.Frequencies;
+import beast.base.spec.domain.NonNegativeReal;
+import beast.base.spec.evolution.substitutionmodel.Frequencies;
+import beast.base.spec.inference.parameter.RealVectorParam;
+import beast.base.spec.inference.parameter.SimplexParam;
+import beast.base.spec.type.RealVector;
+import beast.base.spec.type.Simplex;
 import junit.framework.TestCase;
 import substmodels.nucleotide.GTR;
 
@@ -31,13 +35,13 @@ public class GTRTest extends TestCase {
      */
     protected UnequalBaseFrequencies test0 = new UnequalBaseFrequencies() {
         @Override
-		public Double[] getPi() {
-            return new Double[]{0.25, 0.25, 0.25, 0.25};
+		public double[] getPi() {
+            return new double[]{0.25, 0.25, 0.25, 0.25};
         }
 
         @Override
-		public Double [] getRates() {
-            return new Double[] {0.5, 1.0, 0.5, 0.5, 1.0, 0.5};
+		public double [] getRates() {
+            return new double[] {0.5, 1.0, 0.5, 0.5, 1.0, 0.5};
         }
 
         @Override
@@ -58,13 +62,13 @@ public class GTRTest extends TestCase {
 
     protected UnequalBaseFrequencies test1 = new UnequalBaseFrequencies() {
         @Override
-		public Double[] getPi() {
-            return new Double[]{0.50, 0.20, 0.2, 0.1};
+		public double[] getPi() {
+            return new double[]{0.50, 0.20, 0.2, 0.1};
         }
 
         @Override
-		public Double [] getRates() {
-            return new Double[] {0.5, 1.0, 0.5, 0.5, 1.0, 0.5};
+		public double [] getRates() {
+            return new double[] {0.5, 1.0, 0.5, 0.5, 1.0, 0.5};
         }
 
         @Override
@@ -85,13 +89,13 @@ public class GTRTest extends TestCase {
 
     protected UnequalBaseFrequencies test2 = new UnequalBaseFrequencies() {
         @Override
-		public Double[] getPi() {
-            return new Double[]{0.20, 0.30, 0.25, 0.25};
+		public double[] getPi() {
+            return new double[]{0.20, 0.30, 0.25, 0.25};
         }
 
         @Override
-		public Double [] getRates() {
-            return new Double[] {0.2, 1.0, 0.2, 0.2, 1.0, 0.2};
+		public double [] getRates() {
+            return new double[] {0.2, 1.0, 0.2, 0.2, 1.0, 0.2};
         }
 
         @Override
@@ -112,13 +116,13 @@ public class GTRTest extends TestCase {
 
     protected UnequalBaseFrequencies test3 = new UnequalBaseFrequencies() {
         @Override
-		public Double[] getPi() {
-            return new Double[]{0.20, 0.30, 0.25, 0.25};
+		public double[] getPi() {
+            return new double[]{0.20, 0.30, 0.25, 0.25};
         }
 
         @Override
-		public Double [] getRates() {
-            return new Double[] {0.2, 1.0, 0.3, 0.4, 1.0, 0.5};
+		public double [] getRates() {
+            return new double[] {0.2, 1.0, 0.3, 0.4, 1.0, 0.5};
         }
 
         @Override
@@ -129,23 +133,23 @@ public class GTRTest extends TestCase {
         @Override
 		public double[] getExpectedResult() {
             return new double[]{
-            		0.9151233523912986, 0.01419463331835106, 0.053614529507541434, 0.017067484782809166, 
-            		0.009463088878900653, 0.9148659231065082, 0.022324155452048293, 0.05334683256254297, 
-            		0.042891623606033207, 0.026788986542458024, 0.9028769239489847, 0.027442465902524332, 
+            		0.9151233523912986, 0.01419463331835106, 0.053614529507541434, 0.017067484782809166,
+            		0.009463088878900653, 0.9148659231065082, 0.022324155452048293, 0.05334683256254297,
+            		0.042891623606033207, 0.026788986542458024, 0.9028769239489847, 0.027442465902524332,
             		0.01365398782624723, 0.06401619907505152, 0.027442465902524263, 0.8948873471961769
             };
         }
     };
-    
+
     protected UnequalBaseFrequencies test4 = new UnequalBaseFrequencies() {
         @Override
-		public Double[] getPi() {
-            return new Double[]{0.20, 0.30, 0.25, 0.25};
+		public double[] getPi() {
+            return new double[]{0.20, 0.30, 0.25, 0.25};
         }
 
         @Override
-		public Double [] getRates() {
-            return new Double[] {0.2, 10.0, 0.3, 0.4, 5.0, 0.5};
+		public double [] getRates() {
+            return new double[] {0.2, 10.0, 0.3, 0.4, 5.0, 0.5};
         }
 
         @Override
@@ -156,9 +160,9 @@ public class GTRTest extends TestCase {
         @Override
 		public double[] getExpectedResult() {
             return new double[]{
-            			0.8780963047046206, 0.0033252855682803723, 0.11461112844510626, 0.003967281281992822, 
-            			0.002216857045520258, 0.9327483979953872, 0.005055665025823634, 0.05997907993326873, 
-            			0.09168890275608481, 0.006066798030988321, 0.8959983003009074, 0.0062459989120190644, 
+            			0.8780963047046206, 0.0033252855682803723, 0.11461112844510626, 0.003967281281992822,
+            			0.002216857045520258, 0.9327483979953872, 0.005055665025823634, 0.05997907993326873,
+            			0.09168890275608481, 0.006066798030988321, 0.8959983003009074, 0.0062459989120190644,
             			0.0031738250255942332, 0.07197489591992245, 0.006245998912019033, 0.9186052801424642
             };
         }
@@ -170,12 +174,12 @@ public class GTRTest extends TestCase {
     public void testGTR() throws Exception {
         for (UnequalBaseFrequencies test : all) {
 
-            RealParameter f = new RealParameter(test.getPi());
+            Simplex f = new SimplexParam(test.getPi());
             Frequencies freqs = new Frequencies();
             freqs.initByName("frequencies", f);
 
             GTR gtr = new GTR();
-            RealParameter gtrRates = new RealParameter(test.getRates());
+            RealVector<NonNegativeReal> gtrRates = new RealVectorParam<>(test.getRates(), NonNegativeReal.INSTANCE);
             gtr.initByName("rates", gtrRates, "frequencies", freqs);
             gtr.printQ(System.out); // to obtain XQ for python script
 //            for (int i = 0; i < 6; ++i)

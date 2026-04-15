@@ -2,7 +2,9 @@ package test.substmodels.nucleotide;
 
 
 import beast.base.core.Description;
-import beast.base.inference.parameter.RealParameter;
+import beast.base.spec.domain.NonNegativeReal;
+import beast.base.spec.inference.parameter.RealVectorParam;
+import beast.base.spec.type.RealVector;
 import junit.framework.TestCase;
 import substmodels.nucleotide.SYM;
 
@@ -30,8 +32,8 @@ public class SYMTest extends TestCase {
      */
     protected EqualBaseFrequencies test0 = new EqualBaseFrequencies() {
         @Override
-		public Double [] getRates() {
-            return new Double[] {0.2, 10.0, 0.3, 0.4, 5.0, 0.5};
+		public double [] getRates() {
+            return new double[] {0.2, 10.0, 0.3, 0.4, 5.0, 0.5};
         }
 
         @Override
@@ -55,10 +57,10 @@ public class SYMTest extends TestCase {
 
     public void testSYM() throws Exception {
         for (EqualBaseFrequencies test : all) {
-            
+
             SYM sym = new SYM();
-            RealParameter symRates = new RealParameter(test.getRates());
-            sym.initByName("rates", symRates);
+            RealVector<NonNegativeReal> rates = new RealVectorParam<>(test.getRates(), NonNegativeReal.INSTANCE);
+            sym.initByName("rates", rates);
             sym.printQ(System.out); // to obtain XQ for python script
 //            for (int i = 0; i < 6; ++i)
 //                System.out.println("Rate " + sym.getSubstitution(i) + " : " + sym.getRate(i));

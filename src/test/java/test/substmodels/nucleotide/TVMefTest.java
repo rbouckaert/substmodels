@@ -2,7 +2,9 @@ package test.substmodels.nucleotide;
 
 
 import beast.base.core.Description;
-import beast.base.inference.parameter.RealParameter;
+import beast.base.spec.domain.NonNegativeReal;
+import beast.base.spec.inference.parameter.RealVectorParam;
+import beast.base.spec.type.RealVector;
 import junit.framework.TestCase;
 import substmodels.nucleotide.TVMef;
 
@@ -30,8 +32,8 @@ public class TVMefTest extends TestCase {
      */
     protected EqualBaseFrequencies test0 = new EqualBaseFrequencies() {
         @Override
-		public Double [] getRates() {
-            return new Double[] {0.2, 10.0, 0.3, 0.4, 5.0};
+		public double [] getRates() {
+            return new double[] {0.2, 10.0, 0.3, 0.4, 5.0};
         }
 
         @Override
@@ -55,9 +57,9 @@ public class TVMefTest extends TestCase {
 
     public void testTVMef() throws Exception {
         for (EqualBaseFrequencies test : all) {
-            
+
             TVMef tvmef = new TVMef();
-            RealParameter tvmefRates = new RealParameter(test.getRates());
+            RealVector<NonNegativeReal> tvmefRates = new RealVectorParam<>(test.getRates(), NonNegativeReal.INSTANCE);
             tvmef.initByName("rates", tvmefRates);
             tvmef.printQ(System.out); // to obtain XQ for python script
 //            for (int i = 0; i < 6; ++i)

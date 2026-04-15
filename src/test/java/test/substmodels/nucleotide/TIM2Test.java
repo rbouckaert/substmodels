@@ -1,7 +1,9 @@
 package test.substmodels.nucleotide;
 
 import beast.base.core.Description;
-import beast.base.inference.parameter.RealParameter;
+import beast.base.spec.domain.NonNegativeReal;
+import beast.base.spec.inference.parameter.RealVectorParam;
+import beast.base.spec.type.RealVector;
 import junit.framework.TestCase;
 import substmodels.nucleotide.TIM2;
 
@@ -25,8 +27,8 @@ public class TIM2Test extends TestCase {
      */
     protected EqualBaseFrequencies test0 = new EqualBaseFrequencies() {
         @Override
-        public Double [] getRates() {
-            return new Double[] {1.0, 2.0, 3.0, 4.0};
+        public double [] getRates() {
+            return new double[] {1.0, 2.0, 3.0, 4.0};
         }
 
         @Override
@@ -52,7 +54,7 @@ public class TIM2Test extends TestCase {
         for (EqualBaseFrequencies test : all) {
 
             TIM2 tim2 = new TIM2();
-            RealParameter rates = new RealParameter(test.getRates());
+            RealVector<NonNegativeReal> rates = new RealVectorParam<>(test.getRates(), NonNegativeReal.INSTANCE);
             tim2.initByName("rates", rates);
             tim2.printQ(System.out); // to obtain XQ for python script
 //            for (int i = 0; i < 6; ++i)

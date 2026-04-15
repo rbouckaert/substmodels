@@ -5,7 +5,7 @@ package test.substmodels.nucleotide;
  */
 public interface EqualBaseFrequencies extends UnequalBaseFrequencies {
     @Override
-    default Double[] getPi() {
+    default double[] getPi() {
         throw new IllegalArgumentException("Default to [.25, .25, .25, .25] !");
     }
 }

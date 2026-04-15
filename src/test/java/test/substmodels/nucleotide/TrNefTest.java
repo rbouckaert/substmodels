@@ -1,7 +1,9 @@
 package test.substmodels.nucleotide;
 
 import beast.base.core.Description;
-import beast.base.inference.parameter.RealParameter;
+import beast.base.spec.domain.NonNegativeReal;
+import beast.base.spec.inference.parameter.RealVectorParam;
+import beast.base.spec.type.RealVector;
 import junit.framework.TestCase;
 import substmodels.nucleotide.TrNef;
 
@@ -25,8 +27,8 @@ public class TrNefTest extends TestCase {
      */
     protected EqualBaseFrequencies test0 = new EqualBaseFrequencies() {
         @Override
-        public Double [] getRates() {
-            return new Double[] {1.0, 2.0, 3.0};
+        public double [] getRates() {
+            return new double[] {1.0, 2.0, 3.0};
         }
 
         @Override
@@ -52,7 +54,7 @@ public class TrNefTest extends TestCase {
         for (EqualBaseFrequencies test : all) {
 
             TrNef trNe = new TrNef();
-            RealParameter rates = new RealParameter(test.getRates());
+            RealVector<NonNegativeReal> rates = new RealVectorParam<>(test.getRates(), NonNegativeReal.INSTANCE);
             trNe.initByName("rates", rates);
             trNe.printQ(System.out); // to obtain XQ for python script
 //            for (int i = 0; i < 6; ++i)

@@ -1,8 +1,12 @@
 package test.substmodels.nucleotide;
 
 import beast.base.core.Description;
-import beast.base.inference.parameter.RealParameter;
-import beast.base.evolution.substitutionmodel.Frequencies;
+import beast.base.spec.domain.NonNegativeReal;
+import beast.base.spec.evolution.substitutionmodel.Frequencies;
+import beast.base.spec.inference.parameter.RealVectorParam;
+import beast.base.spec.inference.parameter.SimplexParam;
+import beast.base.spec.type.RealVector;
+import beast.base.spec.type.Simplex;
 import junit.framework.TestCase;
 import substmodels.nucleotide.HKY;
 
@@ -31,13 +35,13 @@ public class HKYTest extends TestCase {
      */
     protected UnequalBaseFrequencies test1 = new UnequalBaseFrequencies() {
         @Override
-		public Double[] getPi() {
-            return new Double[]{0.50, 0.20, 0.2, 0.1};
+		public double[] getPi() {
+            return new double[]{0.50, 0.20, 0.2, 0.1};
         }
 
         @Override
-        public Double [] getRates() {
-            return new Double[] {0.5, 1.0};
+        public double [] getRates() {
+            return new double[] {0.5, 1.0};
         }
 
         @Override
@@ -58,13 +62,13 @@ public class HKYTest extends TestCase {
 
     protected UnequalBaseFrequencies test2 = new UnequalBaseFrequencies() {
         @Override
-		public Double[] getPi() {
-            return new Double[]{0.20, 0.30, 0.25, 0.25};
+		public double[] getPi() {
+            return new double[]{0.20, 0.30, 0.25, 0.25};
         }
 
         @Override
-        public Double [] getRates() {
-            return new Double[] {0.2, 1.0};
+        public double [] getRates() {
+            return new double[] {0.2, 1.0};
         }
 
         @Override
@@ -88,12 +92,12 @@ public class HKYTest extends TestCase {
     public void testHKY() throws Exception {
         for (UnequalBaseFrequencies test : all) {
 
-            RealParameter f = new RealParameter(test.getPi());
+            Simplex f = new SimplexParam(test.getPi());
             Frequencies freqs = new Frequencies();
             freqs.initByName("frequencies", f); // "estimate", true
 
             HKY hky = new HKY();
-            RealParameter rates = new RealParameter(test.getRates());
+            RealVector<NonNegativeReal> rates = new RealVectorParam<>(test.getRates(), NonNegativeReal.INSTANCE);
             hky.initByName("rates", rates, "frequencies", freqs);
             hky.printQ(System.out); // to obtain XQ for python script
 //            for (int i = 0; i < 6; ++i)

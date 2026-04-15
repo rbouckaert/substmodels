@@ -1,8 +1,12 @@
 package test.substmodels.nucleotide;
 
 import beast.base.core.Description;
-import beast.base.inference.parameter.RealParameter;
-import beast.base.evolution.substitutionmodel.Frequencies;
+import beast.base.spec.domain.NonNegativeReal;
+import beast.base.spec.evolution.substitutionmodel.Frequencies;
+import beast.base.spec.inference.parameter.RealVectorParam;
+import beast.base.spec.inference.parameter.SimplexParam;
+import beast.base.spec.type.RealVector;
+import beast.base.spec.type.Simplex;
 import junit.framework.TestCase;
 import substmodels.nucleotide.F81;
 
@@ -29,13 +33,13 @@ public class F81Test extends TestCase {
      */
     protected UnequalBaseFrequencies test0 = new UnequalBaseFrequencies() {
         @Override
-        public Double[] getPi() {
-            return new Double[]{0.4, 0.3, 0.2, 0.1};
+        public double[] getPi() {
+            return new double[]{0.4, 0.3, 0.2, 0.1};
         }
 
         @Override
-        public Double [] getRates() {
-            return new Double[] {1.0};
+        public double [] getRates() {
+            return new double[] {1.0};
         }
 
         @Override
@@ -60,19 +64,19 @@ public class F81Test extends TestCase {
     public void testF81() throws Exception {
         for (UnequalBaseFrequencies test : all) {
 
-            RealParameter f = new RealParameter(test.getPi());
+        	Simplex f = new SimplexParam(test.getPi());
             Frequencies freqs = new Frequencies();
             freqs.initByName("frequencies", f);
 
             F81 f81 = new F81();
-            RealParameter rates = new RealParameter(test.getRates());
+            RealVector<NonNegativeReal> rates = new RealVectorParam<>(test.getRates(), NonNegativeReal.INSTANCE);
             f81.initByName("rates", rates, "frequencies", freqs);
-            
+
             // AC=AT=AG=CG=CT=GT
             assertEquals(true, f81.getRateAC()==f81.getRateAT() &&
                     f81.getRateAC()==f81.getRateCG() && f81.getRateAC()== f81.getRateGT() &&
                     f81.getRateAC()==f81.getRateAG() && f81.getRateAC()==f81.getRateCT());
-            
+
             double distance = test.getDistance();
 
             double[] mat = new double[4 * 4];

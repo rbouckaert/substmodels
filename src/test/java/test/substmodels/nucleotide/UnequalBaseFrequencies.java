@@ -4,9 +4,9 @@ package test.substmodels.nucleotide;
  * @author Walter Xie
  */
 public interface UnequalBaseFrequencies {
-    Double[] getPi();
+    double[] getPi();
 
-    Double [] getRates();
+    double [] getRates();
 
     double getDistance();
 
