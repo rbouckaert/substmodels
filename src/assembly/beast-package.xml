@@ -23,7 +23,10 @@
             <scope>runtime</scope>
             <excludes>
                 <exclude>io.github.compevol:beast-base</exclude>
+                <exclude>io.github.compevol:beast-fx</exclude>
                 <exclude>io.github.compevol:beast-pkgmgmt</exclude>
+                <!-- Or be more specific: -->
+                <exclude>org.openjfx:*:*:*</exclude>
             </excludes>
             <useTransitiveFiltering>true</useTransitiveFiltering>
         </dependencySet>
@@ -32,12 +35,12 @@
     <fileSets>
         <!-- examples/ (if present) -->
         <fileSet>
-            <directory>${project.basedir}/src/test/resources/my.beast.example/examples</directory>
+            <directory>${project.basedir}/src/test/resources/${beast.pkg.name}/examples</directory>
             <outputDirectory>/examples</outputDirectory>
         </fileSet>
         <!-- fxtemplates/ (if present; use JPMS module-namespaced resource path) -->
         <fileSet>
-            <directory>${project.basedir}/src/main/resources/my.beast.example/fxtemplates</directory>
+            <directory>${project.basedir}/src/main/resources/${beast.pkg.name}/fxtemplates</directory>
             <outputDirectory>/fxtemplates</outputDirectory>
         </fileSet>
     </fileSets>

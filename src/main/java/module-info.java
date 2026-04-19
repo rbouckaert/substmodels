@@ -1,8 +1,8 @@
 open module substmodel {
-    requires beast.pkgmgmt;
+    requires transitive beast.pkgmgmt;
     requires transitive beast.base;
     requires transitive beast.fx;
-    requires javafx.controls;
+    requires transitive javafx.controls;
 
 
     exports substmodels.nucleotide;
